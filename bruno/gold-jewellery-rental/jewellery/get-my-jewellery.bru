@@ -1,0 +1,29 @@
+meta {
+  name: Get My Jewellery
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/jewellery/my
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+params:query {
+  page: 0
+  size: 20
+  sortBy: createdAt
+  sortDir: desc
+}
+
+docs {
+  Returns all jewellery listings created by the authenticated SUPPLIER.
+  Supports pagination via page/size query params.
+  sortBy can be any entity field (e.g. createdAt, title, rentPerDay).
+  sortDir: asc or desc.
+}

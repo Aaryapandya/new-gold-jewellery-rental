@@ -1,0 +1,20 @@
+meta {
+  name: Get User by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/admin/users/{{userId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+docs {
+  Returns a specific user's full profile.
+  Requires ADMIN role.
+}

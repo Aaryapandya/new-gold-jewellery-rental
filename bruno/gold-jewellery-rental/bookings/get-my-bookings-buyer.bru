@@ -1,0 +1,25 @@
+meta {
+  name: Get My Bookings (Buyer)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/bookings/my/buyer
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+params:query {
+  page: 0
+  size: 20
+}
+
+docs {
+  Returns all bookings created by the currently authenticated BUYER.
+  Results are sorted by createdAt descending (most recent first).
+}

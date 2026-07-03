@@ -1,0 +1,25 @@
+meta {
+  name: Verify User Mobile
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/admin/users/{{userId}}/verify-mobile
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  verified: true
+}
+
+docs {
+  Toggles the mobileVerified flag for a user.
+  verified: true to mark as verified, false to unverify.
+  Requires ADMIN role.
+}

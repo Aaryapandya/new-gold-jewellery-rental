@@ -1,0 +1,32 @@
+meta {
+  name: Admin Cancel Booking
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/admin/bookings/{{bookingId}}/cancel
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "reason": "Policy violation — fraudulent booking detected"
+  }
+}
+
+docs {
+  Force-cancels any non-terminal booking.
+  Releases jewellery availability if it was previously reserved.
+  Can cancel bookings in any non-completed/non-cancelled state.
+  Requires ADMIN role.
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Delete Jewellery
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/jewellery/{{jewelleryId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+docs {
+  Deletes a jewellery listing. Only the owning SUPPLIER may delete.
+  Blocked if an ACTIVE or APPROVED booking exists for this listing.
+}

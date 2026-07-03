@@ -1,0 +1,31 @@
+meta {
+  name: Cancel Booking
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/bookings/{{bookingId}}/cancel
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "reason": "Change of plans — wedding postponed"
+  }
+}
+
+docs {
+  Buyer cancels a REQUESTED or APPROVED booking.
+  Transitions: REQUESTED/APPROVED → CANCELLED.
+  A reason is recommended for the supplier's reference.
+}

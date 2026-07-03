@@ -1,0 +1,47 @@
+meta {
+  name: Create Jewellery
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/jewellery
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "22K Gold Necklace Set",
+    "description": "Traditional bridal necklace with matching earrings, handcrafted by Rajasthani artisans",
+    "weightInGrams": 45.5,
+    "rentPerDay": 500.00,
+    "category": "Necklace",
+    "addressLine": "12, MG Road",
+    "city": "Bangalore",
+    "pincode": "560001",
+    "latitude": 12.9716,
+    "longitude": 77.5946
+  }
+}
+
+script:post-response {
+  const data = res.getBody();
+  if (data && data.data && data.data.id) {
+    bru.setVar("jewelleryId", data.data.id);
+  }
+}
+
+docs {
+  Creates a new jewellery listing. Requires SUPPLIER role.
+  New listings start in UNDER_VERIFICATION status until approved by an admin.
+  The post-response script saves the new jewellery ID to the jewelleryId variable.
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Return Jewellery
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/bookings/{{bookingId}}/return
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+docs {
+  Records the physical return of the jewellery, completing the rental.
+  Transitions: ACTIVE → COMPLETED.
+  Restores item availability for future bookings.
+  No request body required.
+}

@@ -1,0 +1,31 @@
+meta {
+  name: Reject Booking
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/bookings/{{bookingId}}/reject
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "reason": "Item not available for that period due to prior commitment"
+  }
+}
+
+docs {
+  Supplier rejects a REQUESTED booking.
+  Transitions: REQUESTED → REJECTED.
+  A reason is recommended for the buyer's reference.
+}

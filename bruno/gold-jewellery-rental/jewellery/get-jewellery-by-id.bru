@@ -1,0 +1,16 @@
+meta {
+  name: Get Jewellery by ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/jewellery/{{jewelleryId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Returns full details of a specific jewellery listing.
+  Public endpoint — no authentication required.
+}

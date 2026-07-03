@@ -1,0 +1,26 @@
+meta {
+  name: Upload Profile Photo
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/users/me/photo
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+body:multipart-form {
+  file: @file()
+}
+
+docs {
+  Uploads the user's profile photo to Cloudinary.
+  Accepted formats: image/jpeg, image/png.
+  Select a photo file in the 'file' field.
+  Returns the updated user profile with the new photo URL.
+}

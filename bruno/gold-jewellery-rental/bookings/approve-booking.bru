@@ -1,0 +1,30 @@
+meta {
+  name: Approve Booking
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/bookings/{{bookingId}}/approve
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {}
+}
+
+docs {
+  Supplier approves a REQUESTED booking.
+  The jewellery is marked unavailable and reserved for the buyer.
+  Transitions: REQUESTED → APPROVED.
+  Body can be empty or omitted entirely.
+}

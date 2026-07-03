@@ -1,0 +1,27 @@
+meta {
+  name: Get Booking Calendar
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/bookings/calendar/{{jewelleryId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+params:query {
+  windowStart: 2025-09-01T00:00:00Z
+  windowEnd: 2025-10-01T00:00:00Z
+}
+
+docs {
+  Returns the booking calendar for a jewellery item within an optional date window.
+  Useful for buyers to check which dates are already taken before placing a booking.
+  windowStart and windowEnd are optional ISO-8601 timestamps.
+  Requires any valid JWT (buyer, supplier, or admin).
+}

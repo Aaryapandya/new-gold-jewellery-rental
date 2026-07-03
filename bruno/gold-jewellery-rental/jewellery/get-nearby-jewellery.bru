@@ -1,0 +1,28 @@
+meta {
+  name: Get Nearby Jewellery
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/jewellery/nearby
+  body: none
+  auth: none
+}
+
+params:query {
+  latitude: 12.9716
+  longitude: 77.5946
+  radiusKm: 25
+  category: Necklace
+  page: 0
+  size: 20
+}
+
+docs {
+  Discovers available jewellery within a radius of the given coordinates.
+  Only ACTIVE, available listings are returned, ordered by distance (nearest first).
+  latitude and longitude are required. radiusKm defaults to 50 km (server default).
+  category is optional — filter by type (Necklace, Bangles, Earrings, etc.).
+  Public endpoint — no authentication required.
+}

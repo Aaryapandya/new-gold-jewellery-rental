@@ -1,0 +1,26 @@
+meta {
+  name: Get Pending Verification Users
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/admin/users/pending-verification
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  page: 0
+  size: 20
+}
+
+docs {
+  Returns users whose email or mobile verification is still pending.
+  Results sorted by createdAt ascending (oldest first).
+  Requires ADMIN role.
+}

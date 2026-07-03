@@ -1,0 +1,38 @@
+meta {
+  name: Add Family Member
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/users/me/family
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Ravi Sharma",
+    "relation": "Brother"
+  }
+}
+
+script:post-response {
+  const data = res.getBody();
+  if (data && data.data && data.data.id) {
+    bru.setVar("familyMemberId", data.data.id);
+  }
+}
+
+docs {
+  Adds a new family member to the authenticated user's profile.
+  The post-response script saves the new family member ID to the familyMemberId variable.
+}

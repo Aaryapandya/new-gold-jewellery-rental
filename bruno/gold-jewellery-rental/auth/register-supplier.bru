@@ -1,0 +1,30 @@
+meta {
+  name: Register (Supplier)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Rahul Mehta",
+    "email": "rahul.supplier@example.com",
+    "password": "S@pplier1",
+    "mobileNumber": "9123456789",
+    "role": "SUPPLIER"
+  }
+}
+
+docs {
+  Registers a SUPPLIER account.
+  Suppliers can list jewellery items for rent.
+}

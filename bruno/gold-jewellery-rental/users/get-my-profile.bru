@@ -1,0 +1,20 @@
+meta {
+  name: Get My Profile
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/users/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+docs {
+  Returns the full profile of the currently authenticated user.
+  Works for all roles — use the appropriate token variable.
+}

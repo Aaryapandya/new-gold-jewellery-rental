@@ -1,0 +1,20 @@
+meta {
+  name: Remove Family Member
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/users/me/family/{{familyMemberId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+docs {
+  Removes a specific family member.
+  Only the owning user may delete their own family members.
+}

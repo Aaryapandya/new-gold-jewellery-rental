@@ -1,0 +1,26 @@
+meta {
+  name: Activate / Deactivate User
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/admin/users/{{userId}}/activate
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  active: true
+}
+
+docs {
+  Activates or deactivates a user account.
+  active: true to activate, false to deactivate.
+  ADMIN accounts cannot be deactivated.
+  Requires ADMIN role.
+}

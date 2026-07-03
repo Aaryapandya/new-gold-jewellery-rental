@@ -1,0 +1,30 @@
+meta {
+  name: Upload Document (Aadhaar Front)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/users/me/documents/aadhaar_front
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+body:multipart-form {
+  file: @file()
+}
+
+docs {
+  Uploads an identity document for the authenticated user.
+  Allowed docType path values:
+    - aadhaar_front
+    - aadhaar_back
+    - pan_front
+    - pan_back
+  Clone this request and change the URL path segment for other document types.
+  Returns the updated user profile with the document URL stored.
+}

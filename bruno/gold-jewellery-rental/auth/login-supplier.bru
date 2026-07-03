@@ -1,0 +1,34 @@
+meta {
+  name: Login (Supplier)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "rahul.supplier@example.com",
+    "password": "S@pplier1"
+  }
+}
+
+script:post-response {
+  const data = res.getBody();
+  if (data && data.data && data.data.accessToken) {
+    bru.setVar("supplierToken", data.data.accessToken);
+  }
+}
+
+docs {
+  Logs in as a SUPPLIER.
+  The post-response script auto-saves the token to supplierToken.
+}

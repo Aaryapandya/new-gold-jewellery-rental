@@ -1,0 +1,28 @@
+meta {
+  name: Get All Jewellery (Admin)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/admin/jewellery
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  status: UNDER_VERIFICATION
+  page: 0
+  size: 20
+}
+
+docs {
+  Lists all jewellery listings with an optional status filter.
+  status filter: UNDER_VERIFICATION | ACTIVE | INACTIVE (optional)
+  Results sorted by createdAt descending.
+  Requires ADMIN role.
+}

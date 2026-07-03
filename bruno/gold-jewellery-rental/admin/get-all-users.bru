@@ -1,0 +1,30 @@
+meta {
+  name: Get All Users
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/admin/users
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  role: SUPPLIER
+  city: Mumbai
+  page: 0
+  size: 20
+}
+
+docs {
+  Lists all users with optional role and city filters, paginated.
+  role filter: BUYER | SUPPLIER | ADMIN (optional)
+  city filter: any city string (optional)
+  Results sorted by createdAt descending.
+  Requires ADMIN role.
+}

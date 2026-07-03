@@ -1,0 +1,36 @@
+meta {
+  name: Login
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "priya@example.com",
+    "password": "P@ssword1"
+  }
+}
+
+script:post-response {
+  const data = res.getBody();
+  if (data && data.data && data.data.accessToken) {
+    bru.setVar("buyerToken", data.data.accessToken);
+  }
+}
+
+docs {
+  Authenticates a user and returns a JWT access token.
+  Copy the returned accessToken into the buyerToken / supplierToken / adminToken
+  environment variable as appropriate.
+  The post-response script auto-saves the token to buyerToken.
+}

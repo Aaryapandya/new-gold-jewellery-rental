@@ -1,0 +1,27 @@
+meta {
+  name: Change Jewellery Status
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/admin/jewellery/{{jewelleryId}}/status
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  status: ACTIVE
+}
+
+docs {
+  Changes the lifecycle status of a jewellery listing.
+  status values: UNDER_VERIFICATION | ACTIVE | INACTIVE
+  Use ACTIVE to approve a listing after reviewing bills/images.
+  Use INACTIVE to suspend a listing.
+  Requires ADMIN role.
+}

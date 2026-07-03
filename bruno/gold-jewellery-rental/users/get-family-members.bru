@@ -1,0 +1,19 @@
+meta {
+  name: Get Family Members
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/users/me/family
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+docs {
+  Returns all family members associated with the authenticated user.
+}

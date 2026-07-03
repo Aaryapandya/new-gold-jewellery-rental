@@ -1,0 +1,34 @@
+meta {
+  name: Update Jewellery
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/jewellery/{{jewelleryId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "rentPerDay": 600.00,
+    "description": "Updated: Traditional bridal necklace with matching earrings — now includes a storage box",
+    "city": "Bangalore",
+    "pincode": "560001"
+  }
+}
+
+docs {
+  Partially updates a jewellery listing. Only non-null fields are applied.
+  Only the owning SUPPLIER may update their own listing.
+  All fields are optional in the request body.
+}

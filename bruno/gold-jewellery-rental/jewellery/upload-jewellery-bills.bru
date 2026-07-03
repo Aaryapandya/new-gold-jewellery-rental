@@ -1,0 +1,26 @@
+meta {
+  name: Upload Jewellery Bills
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/jewellery/{{jewelleryId}}/bills
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+body:multipart-form {
+  files: @file()
+}
+
+docs {
+  Uploads purchase bill / invoice documents for a jewellery listing.
+  Bills serve as proof of ownership for admin verification.
+  Accepted formats: PDF, images.
+  Requires SUPPLIER role and ownership of the listing.
+}

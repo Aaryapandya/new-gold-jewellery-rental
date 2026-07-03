@@ -1,0 +1,43 @@
+meta {
+  name: Create Booking
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/bookings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "jewelleryId": 1,
+    "startDateTime": "2025-09-01T10:00:00Z",
+    "endDateTime": "2025-09-05T10:00:00Z",
+    "buyerNotes": "Need for wedding ceremony, please ensure it is well-polished"
+  }
+}
+
+script:post-response {
+  const data = res.getBody();
+  if (data && data.data && data.data.id) {
+    bru.setVar("bookingId", data.data.id);
+  }
+}
+
+docs {
+  Submits a rental booking request for a jewellery item. Requires BUYER role.
+  Both dates must be in the future. Max advance booking: 90 days.
+  Minimum rental duration: 4 hours.
+  Booking starts in REQUESTED status.
+  The post-response script saves the new booking ID to the bookingId variable.
+}

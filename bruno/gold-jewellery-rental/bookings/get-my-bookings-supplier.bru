@@ -1,0 +1,25 @@
+meta {
+  name: Get My Bookings (Supplier)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/bookings/my/supplier
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+params:query {
+  page: 0
+  size: 20
+}
+
+docs {
+  Returns all bookings on the authenticated SUPPLIER's jewellery items.
+  Results are sorted by createdAt descending (most recent first).
+}

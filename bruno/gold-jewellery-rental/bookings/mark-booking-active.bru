@@ -1,0 +1,21 @@
+meta {
+  name: Mark Booking Active (Handover)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/bookings/{{bookingId}}/active
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+docs {
+  Supplier confirms the jewellery has been physically handed over to the buyer.
+  Transitions: APPROVED → ACTIVE.
+  No request body required.
+}

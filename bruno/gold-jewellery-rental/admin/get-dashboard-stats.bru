@@ -1,0 +1,22 @@
+meta {
+  name: Get Dashboard Stats
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/admin/dashboard/stats
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+docs {
+  Returns high-level platform statistics for the admin dashboard.
+  Response includes: totalUsers, totalBuyers, totalSuppliers,
+  totalBookings, activeBookings, requestedBookings, completedBookings.
+  Requires ADMIN role.
+}

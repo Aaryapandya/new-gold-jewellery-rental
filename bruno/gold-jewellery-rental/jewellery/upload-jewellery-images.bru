@@ -1,0 +1,27 @@
+meta {
+  name: Upload Jewellery Images
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/jewellery/{{jewelleryId}}/images
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{supplierToken}}
+}
+
+body:multipart-form {
+  files: @file()
+}
+
+docs {
+  Uploads one or more image files for a jewellery listing.
+  Each file is stored in Cloudinary; URLs are persisted to jewellery_images table.
+  Accepts: image/jpeg, image/png.
+  Select one or more files in the 'files' field.
+  Requires SUPPLIER role and ownership of the listing.
+}

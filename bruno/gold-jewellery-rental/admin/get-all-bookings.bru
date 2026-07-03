@@ -1,0 +1,25 @@
+meta {
+  name: Get All Bookings (Admin)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/admin/bookings
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+params:query {
+  page: 0
+  size: 20
+}
+
+docs {
+  Lists all platform bookings, most recent first.
+  Requires ADMIN role.
+}

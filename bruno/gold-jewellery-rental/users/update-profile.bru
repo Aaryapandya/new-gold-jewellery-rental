@@ -1,0 +1,37 @@
+meta {
+  name: Update Profile
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/users/me
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{buyerToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Priya Sharma",
+    "mobileNumber": "9876543210",
+    "address": "Flat 4B, Sunshine Apartments, MG Road",
+    "city": "Mumbai",
+    "pincode": "400001",
+    "latitude": 19.0760,
+    "longitude": 72.8777
+  }
+}
+
+docs {
+  Partially updates the authenticated user's profile.
+  All fields are optional — only non-null fields are applied.
+  Latitude and longitude update the user's home location for nearby search.
+}
