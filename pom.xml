@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
@@ -19,11 +19,14 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
         <jjwt.version>0.11.5</jjwt.version>
         <cloudinary.version>1.36.0</cloudinary.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <lombok.version>1.18.30</lombok.version>
+        <!-- 1.6.3 – latest stable; compatible with Lombok 1.18.38 and JDK 25 -->
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <!-- 1.18.38 – first release with official JDK 25 support;
+             fixes NoSuchFieldException for TypeTag.UNKNOWN removed in JDK 25 -->
+        <lombok.version>1.18.38</lombok.version>
     </properties>
 
     <dependencies>
@@ -64,6 +67,12 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <!-- Required for Flyway 10+ PostgreSQL support (extracted from flyway-core in v10) -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
 
         <!-- ─── JWT ──────────────────────────────────────── -->
@@ -145,15 +154,31 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!-- 3.13.0 is required for Java 21+ / 25 javac API compatibility.
+                     Older versions (e.g. 3.11.0 bundled with Spring Boot 3.2.5) crash
+                     with TypeTag::UNKNOWN on JDK 21+ because the javac internal API
+                     changed and the plugin uses it via reflection. -->
+                <version>3.13.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <!-- Use <release> instead of <source>/<target>; this also sets
+                         the bootclasspath correctly for cross-compilation. -->
+                    <release>${java.version}</release>
                     <annotationProcessorPaths>
+                        <!-- 1. Lombok MUST run first so its generated getters/setters
+                                are visible to MapStruct in the same compilation round. -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+                        <!-- 2. lombok-mapstruct-binding enforces the Lombok → MapStruct
+                                processing order via the ServiceLoader SPI mechanism. -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                        <!-- 3. MapStruct processor runs after Lombok. -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
