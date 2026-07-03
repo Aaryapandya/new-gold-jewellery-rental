@@ -1,0 +1,90 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: gold-jewellery-rental
+
+  # ─── DataSource ───────────────────────────────────────────
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/gold_rental}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      # Connection pool sizing (guideline: DbConnectionPooling)
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000        # 30 seconds
+      idle-timeout: 600000             # 10 minutes
+      max-lifetime: 1800000            # 30 minutes
+      connection-test-query: SELECT 1
+
+  # ─── JPA / Hibernate ──────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: validate                # Flyway owns schema; Hibernate only validates
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: public
+        jdbc:
+          time_zone: UTC
+
+  # ─── Flyway ───────────────────────────────────────────────
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  # ─── Multipart (file uploads) ─────────────────────────────
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+# ─── Application-level secrets (injected from env) ────────────
+app:
+  jwt:
+    secret: ${JWT_SECRET:ThisIsAVeryLongSecretKeyForJWTThatIsAtLeast256BitsLongForHS256Algorithm}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}        # 24 hours
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}  # 7 days
+
+  # ─── Cloudinary (guideline: NoHardcodedSecrets) ───────────
+  cloudinary:
+    cloud-name: ${CLOUDINARY_CLOUD_NAME:your_cloud_name}
+    api-key: ${CLOUDINARY_API_KEY:your_api_key}
+    api-secret: ${CLOUDINARY_API_SECRET:your_api_secret}
+
+  # ─── Business constants ───────────────────────────────────
+  booking:
+    max-advance-days: 90          # Cannot book more than 90 days in advance
+    min-rental-hours: 4           # Minimum booking duration
+
+  search:
+    default-radius-km: 50
+    max-radius-km: 500
+
+# ─── Actuator ─────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# ─── Logging ──────────────────────────────────────────────────
+logging:
+  level:
+    com.goldrental: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
