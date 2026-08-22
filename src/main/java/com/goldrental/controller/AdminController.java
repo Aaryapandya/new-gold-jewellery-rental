@@ -3,6 +3,7 @@ package com.goldrental.controller;
 import com.goldrental.domain.enums.JewelleryStatus;
 import com.goldrental.domain.enums.UserRole;
 import com.goldrental.dto.request.BookingActionRequest;
+import com.goldrental.dto.request.CreateAdminRequest;
 import com.goldrental.dto.response.*;
 import com.goldrental.service.AdminService;
 import com.goldrental.service.BookingService;
@@ -57,6 +58,29 @@ public class AdminController {
     private final BookingService bookingService;
 
     // ─── Users ─────────────────────────────────────────────────
+
+    /**
+     * Creates a new ADMIN account. Only an existing ADMIN can call this endpoint.
+     *
+     * <p>Sample request:
+     * <pre>{@code
+     * POST /api/v1/admin/users/create-admin
+     * Authorization: Bearer <admin-token>
+     * {
+     *   "name": "Super Admin",
+     *   "email": "superadmin@goldrental.com",
+     *   "password": "Admin@1234",
+     *   "mobileNumber": "9876543210"
+     * }
+     * }</pre>
+     */
+    @PostMapping("/users/create-admin")
+    public ResponseEntity<ApiResponse<UserResponse>> createAdmin(
+            @Valid @RequestBody final CreateAdminRequest request) {
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Admin account created successfully", adminService.createAdmin(request)));
+    }
 
     /**
      * Lists all users with optional role and city filters, paginated.

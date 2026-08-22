@@ -18,7 +18,8 @@ import org.springframework.stereotype.Component;
 public class AppProperties {
 
     private final Booking booking = new Booking();
-    private final Search search = new Search();
+    private final Search  search  = new Search();
+    private final Admin   admin   = new Admin();
 
     @Getter
     @Setter
@@ -38,5 +39,18 @@ public class AppProperties {
 
         /** Maximum allowed search radius in kilometres. */
         private double maxRadiusKm = 500.0;
+    }
+
+    @Getter
+    @Setter
+    public static class Admin {
+        /** Bootstrap admin email – seeded once at startup if no admin exists. */
+        private String email = "admin@goldrental.com";
+
+        /** Bootstrap admin password (BCrypt-encoded before storage). */
+        private String password = "Admin@1234";
+
+        /** Bootstrap admin display name. */
+        private String name = "Platform Admin";
     }
 }

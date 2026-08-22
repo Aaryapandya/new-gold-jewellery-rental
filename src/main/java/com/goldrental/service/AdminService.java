@@ -4,11 +4,13 @@ import com.goldrental.domain.entity.User;
 import com.goldrental.domain.enums.BookingStatus;
 import com.goldrental.domain.enums.JewelleryStatus;
 import com.goldrental.domain.enums.UserRole;
+import com.goldrental.dto.request.CreateAdminRequest;
 import com.goldrental.dto.response.BookingResponse;
 import com.goldrental.dto.response.JewelleryResponse;
 import com.goldrental.dto.response.PagedResponse;
 import com.goldrental.dto.response.UserResponse;
 import com.goldrental.exception.BusinessException;
+import com.goldrental.exception.DuplicateResourceException;
 import com.goldrental.exception.ResourceNotFoundException;
 import com.goldrental.repository.BookingRepository;
 import com.goldrental.repository.UserRepository;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +49,7 @@ public class AdminService {
     private final UserService       userService;
     private final JewelleryService  jewelleryService;
     private final BookingService    bookingService;
+    private final PasswordEncoder   passwordEncoder;
 
     // ─── User management ───────────────────────────────────────
 
@@ -60,6 +64,37 @@ public class AdminService {
         return PagedResponse.of(page, page.getContent().stream()
                 .map(userService::toUserResponse)
                 .toList());
+    }
+
+    /**
+     * Creates a new ADMIN account. Only callable by an existing ADMIN.
+     * Admin accounts are created pre-verified and active.
+     */
+    @Transactional
+    public UserResponse createAdmin(final CreateAdminRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new DuplicateResourceException("Email already registered: " + request.getEmail());
+        }
+        if (request.getMobileNumber() != null
+                && userRepository.existsByMobileNumber(request.getMobileNumber())) {
+            throw new DuplicateResourceException(
+                    "Mobile number already registered: " + request.getMobileNumber());
+        }
+
+        final User admin = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .mobileNumber(request.getMobileNumber())
+                .role(UserRole.ADMIN)
+                .emailVerified(true)
+                .mobileVerified(true)
+                .isActive(true)
+                .build();
+
+        final User saved = userRepository.save(admin);
+        log.info("Admin created: id={}, email={}", saved.getId(), saved.getEmail());
+        return userService.toUserResponse(saved);
     }
 
     /**
