@@ -47,8 +47,7 @@ public class DataInitializer implements ApplicationRunner {
         final AppProperties.Admin adminProps = appProperties.getAdmin();
 
         // Skip if any ADMIN already exists
-        if (userRepository.findAllWithFilters(UserRole.ADMIN, null, org.springframework.data.domain.Pageable.unpaged())
-                .getTotalElements() > 0) {
+        if (userRepository.existsByRole(UserRole.ADMIN)) {
             log.debug("Bootstrap admin seed skipped – ADMIN account already exists.");
             return;
         }

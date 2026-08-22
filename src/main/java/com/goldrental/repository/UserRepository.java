@@ -24,10 +24,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findAllByEmailVerifiedFalseOrMobileVerifiedFalse(Pageable pageable);
 
+    boolean existsByRole(UserRole role);
+
     @Query("""
             SELECT u FROM User u
             WHERE (:role IS NULL OR u.role = :role)
-              AND (:city IS NULL OR LOWER(u.city) LIKE LOWER(CONCAT('%', :city, '%')))
+              AND (CAST(:city AS string) IS NULL OR LOWER(u.city) LIKE LOWER(CONCAT('%', CAST(:city AS string), '%')))
             """)
     Page<User> findAllWithFilters(
             @Param("role") UserRole role,
