@@ -165,10 +165,17 @@ public class JewelleryService {
     /**
      * Returns the full details of a specific jewellery item.
      * Publicly accessible (no authentication required).
+     *
+     * <p>Returns 404 if the owning supplier is inactive, so deactivated
+     * suppliers' listings are never visible to buyers.
      */
     @Transactional(readOnly = true)
     public JewelleryResponse getJewelleryById(final Long jewelleryId) {
-        return toJewelleryResponse(loadJewellery(jewelleryId), null);
+        final Jewellery jewellery = loadJewellery(jewelleryId);
+        if (!jewellery.getSupplier().isActive()) {
+            throw new ResourceNotFoundException("Jewellery", jewelleryId);
+        }
+        return toJewelleryResponse(jewellery, null);
     }
 
     /**

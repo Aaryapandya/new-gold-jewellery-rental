@@ -92,10 +92,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
 
-                // Jewellery search is public (buyers may be unauthenticated for browsing)
-                .requestMatchers(HttpMethod.GET, "/jewellery/nearby").permitAll()
-                .requestMatchers(HttpMethod.GET, "/jewellery/{id}").permitAll()
-
                 // Admin-only endpoints
                 .requestMatchers("/admin/**").hasRole("ADMIN")
 

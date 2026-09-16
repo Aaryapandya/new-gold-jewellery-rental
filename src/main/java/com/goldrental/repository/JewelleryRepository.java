@@ -41,6 +41,7 @@ public interface JewelleryRepository extends JpaRepository<Jewellery, Long> {
                        + sin(radians(:lat)) * sin(radians(j.latitude))
                    )) AS distance_km
             FROM jewellery j
+            JOIN users u ON u.id = j.supplier_id AND u.is_active = TRUE
             WHERE j.status = 'ACTIVE'
               AND j.is_available = TRUE
               AND (:category IS NULL OR j.category = :category)
@@ -54,6 +55,7 @@ public interface JewelleryRepository extends JpaRepository<Jewellery, Long> {
             countQuery = """
             SELECT COUNT(j.id)
             FROM jewellery j
+            JOIN users u ON u.id = j.supplier_id AND u.is_active = TRUE
             WHERE j.status = 'ACTIVE'
               AND j.is_available = TRUE
               AND (:category IS NULL OR j.category = :category)
