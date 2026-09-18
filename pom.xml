@@ -158,7 +158,7 @@
                      Older versions (e.g. 3.11.0 bundled with Spring Boot 3.2.5) crash
                      with TypeTag::UNKNOWN on JDK 21+ because the javac internal API
                      changed and the plugin uses it via reflection. -->
-                <version>3.13.0</version>
+                <version>3.15.0</version>
                 <configuration>
                     <!-- Use <release> instead of <source>/<target>; this also sets
                          the bootclasspath correctly for cross-compilation. -->
