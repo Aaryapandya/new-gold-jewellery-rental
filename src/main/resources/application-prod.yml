@@ -1,0 +1,89 @@
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: gold-jewellery-rental
+
+  # ─── DataSource (injected from env on Railway/Render) ─────
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+
+  # ─── JPA / Hibernate ──────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        default_schema: public
+        jdbc:
+          time_zone: UTC
+
+  # ─── Flyway ───────────────────────────────────────────────
+  flyway:
+    enabled: false
+
+  # ─── Multipart (file uploads) ─────────────────────────────
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+# ─── Application-level secrets (injected from env) ────────────
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+
+  cloudinary:
+    cloud-name: ${CLOUDINARY_CLOUD_NAME}
+    api-key: ${CLOUDINARY_API_KEY}
+    api-secret: ${CLOUDINARY_API_SECRET}
+
+  booking:
+    max-advance-days: 90
+    min-rental-hours: 4
+
+  search:
+    default-radius-km: 50
+    max-radius-km: 500
+
+  admin:
+    email: ${ADMIN_EMAIL:admin@goldrental.com}
+    password: ${ADMIN_PASSWORD}
+    name: ${ADMIN_NAME:Platform Admin}
+
+# ─── Actuator ─────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# ─── Logging ──────────────────────────────────────────────────
+logging:
+  level:
+    com.goldrental: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

@@ -1,0 +1,32 @@
+# ─── Maven ───────────────────────────────────────────────────
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ─── IDE ─────────────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# ─── OS ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Secrets / Env files ─────────────────────────────────────
+.env
+.env.local
+.env.production
+application-local.yml
+
+# ─── Logs ────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Spring Boot ─────────────────────────────────────────────
+*.jar
+*.war
+*.ear
