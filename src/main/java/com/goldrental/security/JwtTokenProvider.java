@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 /**
@@ -54,10 +54,10 @@ public class JwtTokenProvider {
         final Date expiry = new Date(now.getTime() + ttlMs);
 
         return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .subject(subject)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(getSigningKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -65,7 +65,7 @@ public class JwtTokenProvider {
      * Extracts the email (subject) from a validated token.
      */
     public String getEmailFromToken(final String token) {
-        return parseClaims(token).getSubject();
+        return parseClaims(token).get("sub", String.class);
     }
 
     /**
@@ -102,14 +102,14 @@ public class JwtTokenProvider {
     // ─── Private helpers ───────────────────────────────────────
 
     private Claims parseClaims(final String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
-    private Key getSigningKey() {
+    private SecretKey getSigningKey() {
         final byte[] keyBytes = Decoders.BASE64.decode(
                 java.util.Base64.getEncoder().encodeToString(
                         jwtProperties.getSecret().getBytes()

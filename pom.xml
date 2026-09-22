@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.6</version>
+        <version>4.1.1</version>
         <relativePath/>
     </parent>
 
@@ -20,7 +20,7 @@
 
     <properties>
         <java.version>25</java.version>
-        <jjwt.version>0.11.5</jjwt.version>
+        <jjwt.version>0.13.0</jjwt.version>
         <cloudinary.version>1.36.0</cloudinary.version>
         <!-- 1.6.3 – latest stable; compatible with Lombok 1.18.38 and JDK 25 -->
         <mapstruct.version>1.6.3</mapstruct.version>
