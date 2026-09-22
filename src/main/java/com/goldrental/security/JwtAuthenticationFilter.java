@@ -39,22 +39,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             final HttpServletResponse response,
             final FilterChain filterChain) throws ServletException, IOException {
 
-        final String token = extractTokenFromRequest(request);
+        try {
+            final String token = extractTokenFromRequest(request);
 
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-            final String email = jwtTokenProvider.getEmailFromToken(token);
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+                final String email = jwtTokenProvider.getEmailFromToken(token);
+                final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-            final UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                final UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            log.debug("Set authentication for user: {}", email);
+                log.debug("Set authentication for user: {}", email);
+            }
+        } catch (Exception ex) {
+            log.warn("Could not set user authentication in security context: {}", ex.getMessage());
         }
 
         filterChain.doFilter(request, response);

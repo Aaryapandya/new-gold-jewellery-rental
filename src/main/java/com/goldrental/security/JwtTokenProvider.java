@@ -90,8 +90,9 @@ public class JwtTokenProvider {
             log.warn("Unsupported JWT: {}", ex.getMessage());
         } catch (MalformedJwtException ex) {
             log.warn("Malformed JWT: {}", ex.getMessage());
-        } catch (SecurityException ex) {
-            log.warn("Invalid JWT signature: {}", ex.getMessage());
+        } catch (JwtException ex) {
+            // Covers io.jsonwebtoken.security.SignatureException and all other jjwt exceptions
+            log.warn("Invalid JWT: {}", ex.getMessage());
         } catch (IllegalArgumentException ex) {
             log.warn("Empty JWT claims: {}", ex.getMessage());
         }
