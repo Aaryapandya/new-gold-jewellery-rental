@@ -82,8 +82,9 @@ management:
 # ─── Logging ──────────────────────────────────────────────────
 logging:
   level:
-    com.goldrental: INFO
-    org.springframework.security: WARN
+    com.goldrental: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.authentication: DEBUG
     org.hibernate.SQL: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
