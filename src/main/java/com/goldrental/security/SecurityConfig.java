@@ -89,8 +89,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // Public endpoints (no token required)
-                .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // CORS preflight
+                .requestMatchers("/auth/register", "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                .requestMatchers("/error").permitAll()                  // Spring error dispatcher
 
                 // Admin-only endpoints
                 .requestMatchers("/admin/**").hasRole("ADMIN")

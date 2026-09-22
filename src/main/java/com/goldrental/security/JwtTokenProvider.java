@@ -1,7 +1,6 @@
 package com.goldrental.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -110,11 +109,6 @@ public class JwtTokenProvider {
     }
 
     private SecretKey getSigningKey() {
-        final byte[] keyBytes = Decoders.BASE64.decode(
-                java.util.Base64.getEncoder().encodeToString(
-                        jwtProperties.getSecret().getBytes()
-                )
-        );
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
 }
